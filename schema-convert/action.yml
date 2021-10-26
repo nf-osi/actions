@@ -1,0 +1,14 @@
+name: 'Schema convert'
+description: 'Convert schema .csv to .jsonld using schematic tool'
+inputs:
+  csv:
+    description: 'Schema .csv file'
+    required: true
+outputs:
+  jsonld:
+    description: 'Name of output .jsonld file'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.csv }}
