@@ -2,9 +2,8 @@
 set -e
  
 SCHEMA_CSV=$1
-SCHEMA_CSV_PATH="/github/workspace/$SCHEMA_CSV" # using abs path may not be necessary since -w /github/workspace/ ?
 
-schematic schema convert $SCHEMA_CSV_PATH
+schematic schema convert $SCHEMA_CSV
 
 # By default, name of file will be same except with .jsonld extension
 SCHEMA_JSONLD="${SCHEMA_CSV%.csv}.jsonld" 
