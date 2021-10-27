@@ -10,9 +10,8 @@ inputs:
 runs:
   using: 'docker'
   image: 'Dockerfile'
-  steps:
-     args:
-       - '-t'
-       - ${{ inputs.templates }}
-       - '-j'
-       - ${{ inputs.jsonld }}
+  args:
+    - '-t'
+    - ${{ inputs.templates }}
+    - '-j'
+    - ${{ inputs.jsonld }}
