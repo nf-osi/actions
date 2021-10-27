@@ -27,11 +27,11 @@ done
 
 # Furnish appropriate .synapseConfig file
 # Schematic does not take auth as CLI parameter and requires it be in config.yml.
-sed "s/MY_AUTHTOKEN/${authtoken}/" .synapseConfig > $GITHUB_WORKSPACE/.synapseConfig
+sed "s/MY_AUTHTOKEN/${authtoken}/" $GITHUB_ACTION_PATH/.synapseConfig > $GITHUB_WORKSPACE/.synapseConfig
 
 # Furnish appropriate creds.json file
 # Schematic/GCP client does not take creds as CLI parameter and requires the .json file.
 echo $servicekey > $GITHUB_WORKSPACE/creds.json
 
 # Finally, furnish workspace with config file
-mv config.yml $GITHUB_WORKSPACE/config.yml
+mv $GITHUB_ACTION_PATH/config.yml $GITHUB_WORKSPACE/config.yml
