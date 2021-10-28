@@ -31,7 +31,7 @@ sed "s/MY_AUTHTOKEN/${authtoken}/" $GITHUB_ACTION_PATH/.synapseConfig > $GITHUB_
 
 # Furnish appropriate creds.json file
 # Schematic/GCP client does not take creds as CLI parameter and requires the .json file.
-echo $servicekey > $GITHUB_WORKSPACE/creds.json
+echo $servicekey | base64 -d > $GITHUB_WORKSPACE/creds.json
 
 # Finally, furnish workspace with config file
 mv $GITHUB_ACTION_PATH/config.yml $GITHUB_WORKSPACE/config.yml
