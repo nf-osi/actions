@@ -24,7 +24,7 @@ while getopts ":t:j:" opt; do
 done
 
 IFS=', ' read -r -a templates <<< "$ts"
-echo "In: $pwd"
+echo "In: $(pwd)"
 echo "Number of templates given: ${#templates[@]}" 
 echo "Schema file: $jsonld" 
 
