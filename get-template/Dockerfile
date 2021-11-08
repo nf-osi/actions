@@ -6,6 +6,8 @@ ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 
 RUN python -m pip install schematicpy==1.0.0
 
+ENV THROTTLE=10
+
 COPY entrypoint.sh /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 

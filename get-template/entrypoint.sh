@@ -34,4 +34,5 @@ for i in "${templates[@]}"
 do
   echo "Template: $i"
   schematic manifest -c config.yml get -dt $i -t "$i Manifest" --jsonld $jsonld
+  sleep $THROTTLE
 done
