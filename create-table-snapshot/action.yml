@@ -1,0 +1,24 @@
+name: 'Snapshot'
+description: 'Use synapsepythonclient to create new snapshot version of Table or View'
+inputs:
+  table:
+    description: 'The Table/View ID, e.g. syn9999999'
+    required: true
+  comment:
+    description: 'Optional snapshot comment, defaults to action-snapshot'
+    required: false
+    default: 'action-snapshot'
+  label:
+    description: 'Optional label for snapshot version, defaults to the date-time of run if not set'
+    required: false
+    default: ''
+outputs: 
+  version: 
+    description: 'The created snapshot version reference, e.g. syn9999999.3 if an increment to Version 3 was successful'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.table }}
+    - ${{ inputs.comment }}
+    - ${{ inputs.label }}
