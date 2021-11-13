@@ -16,7 +16,7 @@ synLogin(authToken = Sys.getenv("SYNAPSE_AUTH_TOKEN"))
 # specimenID = StringList
 # modelSystemName = String
 files <- synTableQuery(sprintf("SELECT studyId, UNNEST(specimenID) AS specimenID, individualID, modelSystemName 
-                               FROM %s WHERE individualID <> '' OR specimenID <> '' OR modelSystemName <> ''", FILES_TABLE))
+                               FROM %s WHERE studyId <> '' OR individualID <> '' OR specimenID <> '' OR modelSystemName <> ''", FILES_TABLE))
 meta <- fread(files$filepath)
 
 # Slightly more reshaping given that
