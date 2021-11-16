@@ -7,7 +7,7 @@ args <- commandArgs(trailingOnly = TRUE)
 FILES_TABLE <- args[1] # syn16858331, unlikely to change
 RESOURCE_TABLE <- args[2] # syn26450069, may still move around
 STUDY_RESOURCE_TABLE <- args[3] # different dev/test (syn26452699) and production entities
-PARENT <- "syn26451327"
+PARENT <- args[4]
 
 # Make sure authToken is in environment
 synLogin(authToken = Sys.getenv("SYNAPSE_AUTH_TOKEN"))
