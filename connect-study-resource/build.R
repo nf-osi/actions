@@ -7,6 +7,7 @@ args <- commandArgs(trailingOnly = TRUE)
 FILES_TABLE <- args[1] # syn16858331, unlikely to change
 RESOURCE_TABLE <- args[2] # syn26450069, may still move around
 STUDY_RESOURCE_TABLE <- args[3] # different dev/test (syn26452699) and production entities
+PARENT <- "syn26451327"
 
 # Make sure authToken is in environment
 synLogin(authToken = Sys.getenv("SYNAPSE_AUTH_TOKEN"))
@@ -74,7 +75,7 @@ cols <- list(
   Column(name = "description", columnType = "LARGETEXT"),
   Column(name = "synonyms", columnType = "STRING", maximumSize = 100))
 
-schema <- Schema(name = "STUDY_RESOURCE", columns = cols, parent = "syn26452506")
+schema <- Schema(name = "STUDY_RESOURCE", columns = cols, parent = PARENT)
 table_upload <- Table(schema, result_export)
 table_upload <- synStore(table_upload)
 
