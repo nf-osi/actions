@@ -10,6 +10,9 @@ inputs:
   result:
     description: 'Result table syn ID'
     required: true
+  project:
+    description: 'Parent project syn ID'
+    required: true
 runs:
   using: 'docker'
   image: 'docker://nfosi/connect-study-resource:latest'
@@ -17,3 +20,4 @@ runs:
     - ${{ inputs.files }}
     - ${{ inputs.resources }}
     - ${{ inputs.result }}
+    - ${{ inputs.project }}
