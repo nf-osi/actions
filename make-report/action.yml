@@ -1,0 +1,11 @@
+name: 'Report maker'
+description: 'Use this action for rendering an Rmarkdown report that optionally involves nfportalutils processing'
+inputs:
+  target:
+    description: 'Name of the target step/report in Makefile'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.target }}
