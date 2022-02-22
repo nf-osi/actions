@@ -1,0 +1,27 @@
+name: Scheduled report
+
+on:
+  schedule:
+    # Runs at 6:11 AM (PST) every Monday
+    - cron:  '11 14 * * 1'
+    
+  # Also can run manually from the Actions tab
+  workflow_dispatch:
+  
+
+jobs:
+  build:
+    name: Make report
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nf-osi/actions/make-report@c19aef84f54940d25613caebfb24cdacbc65e150
+        with: 
+          target: updated_report
+        env: 
+          SYNAPSE_AUTH_TOKEN: ${{ secrets.SYNAPSE_AUTH_TOKEN }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update report via Actions
+          
+  
