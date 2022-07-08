@@ -47,10 +47,6 @@ runs:
         echo "SCHEMATIC_ENV=$(poetry env info --path)/bin/activate" >> $GITHUB_ENV
       shell: bash
 
-    # Issues with configs not being backwards-compatible so might need to handle this better
-    - run: mv $GITHUB_ACTION_PATH/config.yml $GITHUB_WORKSPACE/config.yml
-      shell: bash
-
     #----------------------------------------------
     #     setup auth-related files if needed
     #----------------------------------------------
