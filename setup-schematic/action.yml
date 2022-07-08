@@ -44,7 +44,7 @@ runs:
       working-directory: schematic
       run: |
         poetry install --no-interaction
-        source $(poetry env info --path)/bin/activate
+        echo "SCHEMATIC_ENV=$(poetry env info --path)/bin/activate" >> $GITHUB_ENV
       shell: bash
 
     # Issues with configs not being backwards-compatible so might need to handle this better
