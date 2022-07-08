@@ -18,39 +18,27 @@ inputs:
 runs:
   using: "composite"
   steps:
-    #----------------------------------------------
-    #      set-up python
-    #----------------------------------------------
-    - name: Set up python
-      id: setup-python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
-
-    #----------------------------------------------
-    #      install & configure poetry  
-    #----------------------------------------------
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: false
-        installer-parallel: true
-    
-    #----------------------------------------------
-    #     install schematic
-    #----------------------------------------------
     - name: Check out schematic
-      id: checkout-schematic
       uses: actions/checkout@v3
       with:
         repository: Sage-Bionetworks/schematic
         path: schematic
         fetch-depth: 0
-    
+
     - run: git checkout ${{ inputs.schematic-version }}
       working-directory: schematic
       shell: bash
+
+    - name: Install Poetry
+      run: pipx install poetry
+      shell: bash
+    
+    - name: Set up python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+        cache: 'poetry'
+        cache-dependency-path: '**/poetry.lock'
     
     - name: Install schematic
       working-directory: schematic
