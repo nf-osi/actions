@@ -17,59 +17,58 @@ inputs:
 
 runs:
   using: "composite"
+  steps:
+    #----------------------------------------------
+    #      set-up python
+    #----------------------------------------------
+    - name: Set up python
+      id: setup-python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
 
-steps:
-  #----------------------------------------------
-  #      set-up python
-  #----------------------------------------------
-  - name: Set up python
-    id: setup-python
-    uses: actions/setup-python@v2
-    with:
-      python-version: 3.8
-
-  #----------------------------------------------
-  #      install & configure poetry  
-  #----------------------------------------------
-  - name: Install Poetry
-    uses: snok/install-poetry@v1
-    with:
-      virtualenvs-create: true
-      virtualenvs-in-project: false
-      installer-parallel: true
-  
-  #----------------------------------------------
-  #     install schematic
-  #----------------------------------------------
-  - name: Check out schematic
-    id: checkout-schematic
-    uses: actions/checkout@v3
-    with:
-      repository: Sage-Bionetworks/schematic
-      path: schematic
-      fetch-depth: 0
-  
-  - run: git checkout ${{ schematic-version }}
-  
-  - name: Install schematic
-    working-directory: schematic
-    run: poetry install --no-interaction
-    shell: bash
+    #----------------------------------------------
+    #      install & configure poetry  
+    #----------------------------------------------
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: false
+        installer-parallel: true
     
-  - name: Activate
-    run: source .venv/bin/activate
-    shell: bash
+    #----------------------------------------------
+    #     install schematic
+    #----------------------------------------------
+    - name: Check out schematic
+      id: checkout-schematic
+      uses: actions/checkout@v3
+      with:
+        repository: Sage-Bionetworks/schematic
+        path: schematic
+        fetch-depth: 0
+    
+    - run: git checkout ${{ schematic-version }}
+    
+    - name: Install schematic
+      working-directory: schematic
+      run: poetry install --no-interaction
+      shell: bash
+      
+    - name: Activate
+      run: source .venv/bin/activate
+      shell: bash
 
-  # Issues with configs not being backwards-compatible so might need to handle this better
-  - run: mv $GITHUB_ACTION_PATH/config.yml $GITHUB_WORKSPACE/config.yml
-    shell: bash
+    # Issues with configs not being backwards-compatible so might need to handle this better
+    - run: mv $GITHUB_ACTION_PATH/config.yml $GITHUB_WORKSPACE/config.yml
+      shell: bash
 
-  #----------------------------------------------
-  #     setup auth-related files if needed
-  #----------------------------------------------
-  - name: Furnish config and auth files
-    run: $GITHUB_ACTION_PATH/setup_schematic_auth.sh ${{ inputs.auth-token }} ${{ inputs.service-key }}
-    shell: bash
+    #----------------------------------------------
+    #     setup auth-related files if needed
+    #----------------------------------------------
+    - name: Furnish config and auth files
+      run: $GITHUB_ACTION_PATH/setup_schematic_auth.sh ${{ inputs.auth-token }} ${{ inputs.service-key }}
+      shell: bash
     
  
   
