@@ -57,8 +57,8 @@ runs:
       run: poetry install --no-interaction
       shell: bash
       
-    - name: Activate
-      run: source .venv/bin/activate
+    - name: Activate virtual env
+      run: source $(poetry env info --path)/bin/activate
       shell: bash
 
     # Issues with configs not being backwards-compatible so might need to handle this better
