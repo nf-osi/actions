@@ -40,13 +40,11 @@ runs:
         cache: 'poetry'
         cache-dependency-path: '**/poetry.lock'
     
-    - name: Install schematic
+    - name: Install and activate schematic version
       working-directory: schematic
-      run: poetry install --no-interaction
-      shell: bash
-      
-    - name: Activate virtual env
-      run: source $(poetry env info --path)/bin/activate
+      run: |
+        poetry install --no-interaction
+        source $(poetry env info --path)/bin/activate
       shell: bash
 
     # Issues with configs not being backwards-compatible so might need to handle this better
