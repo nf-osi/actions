@@ -49,6 +49,7 @@ runs:
         fetch-depth: 0
     
     - run: git checkout ${{ inputs.schematic-version }}
+      working-directory: schematic
       shell: bash
     
     - name: Install schematic
