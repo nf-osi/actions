@@ -1,3 +1,8 @@
+# This works for setup of schematic for versions of schematic >= v23.1.1
+# It furnishes a generic config.yml file -- most usage does require `-c config.yml`
+# Whether setup should also include authentication and service keys depends on the intended usage:
+# Commands such as `schema convert` and `model validate` don't require authentication, while commands such as `manifest get` do. 
+
 name: Setup schematic
 description: Setup a specific version of schematic from GitHub source
 author: Anh Nguyet Vu
@@ -5,19 +10,25 @@ author: Anh Nguyet Vu
 inputs:
   schematic-version:
     description: The tag or commit sha to use.
-    default: v21.06
+    default: v23.1.1
+  data-model:
+    description: "The data model to use in the current workspace (written into the config), e.g. './DM.jsonld'"
+    required: false
+    default: ''
   auth-token:
-    description: 'Synapse authentication token, only provide if needed for some functions of schematic'
+    description: 'Synapse authentication token, only needed for some functions of schematic'
     required: false
     default: ''
   service-key: # same as service_account_key in https://github.com/google-github-actions/setup-gcloud/blob/master/action.yml
-    description: 'Google API service key with scope for GoogleSheets, only provide if needed for some functions of schematic'
+    description: 'Google API service key with scope for GoogleSheets, only needed for some functions of schematic'
     required: false
     default: ''
 
 runs:
   using: "composite"
   steps:
+
+    # Check out schematic into a side repo called schematic...
     - name: Check out schematic
       uses: actions/checkout@v3
       with:
@@ -25,34 +36,40 @@ runs:
         path: schematic
         fetch-depth: 0
 
+    # Switch to indicated version
     - run: git checkout ${{ inputs.schematic-version }}
       working-directory: schematic
-      shell: bash
-
-    - name: Install Poetry
-      run: pipx install poetry
       shell: bash
     
     - name: Set up python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.8'
-        cache: 'poetry'
-        cache-dependency-path: '**/poetry.lock'
+        python-version: '3.9'
     
-    - name: Install and activate schematic version
+    - name: Install schematic version
       working-directory: schematic
-      run: |
-        poetry install --no-interaction
-        echo "SCHEMATIC_ENV=$(poetry env info --path)/bin/activate" >> $GITHUB_ENV
+      run: pip3 install schematicpy
       shell: bash
 
-    #----------------------------------------------
-    #     setup auth-related files if needed
-    #----------------------------------------------
-    - name: Furnish config and auth files
-      run: $GITHUB_ACTION_PATH/setup_schematic_auth.sh ${{ inputs.auth-token }} ${{ inputs.service-key }}
+    # Write data model into config
+    - name: Update model in config
       shell: bash
+      run: sed "s/SCHEMA_JSONLD_LOCATION/${{ inputs.data-model }}/" $GITHUB_ACTION_PATH/config.yml > $GITHUB_WORKSPACE/config.yml
+
+    #----------------------------------------------
+    #     Set up auth-related files if needed
+    #----------------------------------------------
+
+    # This should be passed in as a SECRETS variable
+    - name: Furnish Synapse config
+      shell: bash
+      run: printf "[authenthication]\nauthtoken = ${{ inputs.auth-token }}" > $GITHUB_WORKSPACE/.synapseConfig
+
+    # This should be passed in as a SECRETS variable
+    - name: Furnish service token
+      shell: bash
+      run: echo ${{ inputs.service-key }} > $GITHUB_WORKSPACE/schematic_service_account_creds.json
+    
     
  
   
